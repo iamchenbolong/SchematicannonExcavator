@@ -51,20 +51,24 @@ public abstract class SchematicannonBlockEntityMixin {
                     ItemStack stack = new ItemStack(st.getBlock());
                     if (ExcavatorHelper.canInsertIntoAnyContainer(level, self.getBlockPos(), stack)) {
                         this.excavatorPaused = false;
+                        HookManager.setFullPaused(self, false);
                         this.state = SchematicannonBlockEntity.State.RUNNING;
                         this.statusMsg = "clearing";
                     } else {
                         this.state = SchematicannonBlockEntity.State.PAUSED;
-                        this.statusMsg = "containerFull";
+                        this.statusMsg = "paused";
+                        HookManager.setFullPaused(self, true);
                         ci.cancel();
                         return;
                     }
                 } else {
                     this.excavatorPaused = false;
+                    HookManager.setFullPaused(self, false);
                     this.state = SchematicannonBlockEntity.State.RUNNING;
                 }
             } else {
                 this.excavatorPaused = false;
+                HookManager.setFullPaused(self, false);
                 this.state = SchematicannonBlockEntity.State.RUNNING;
             }
         }
@@ -86,8 +90,9 @@ public abstract class SchematicannonBlockEntityMixin {
 
         if (!HookManager.tryExcavate(self, level, target)) {
             this.state = SchematicannonBlockEntity.State.PAUSED;
-            this.statusMsg = "containerFull";
+            this.statusMsg = "paused";
             this.excavatorPaused = true;
+            HookManager.setFullPaused(self, true);
             ci.cancel();
             return;
         }

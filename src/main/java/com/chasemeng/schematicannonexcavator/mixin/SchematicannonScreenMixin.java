@@ -1,7 +1,9 @@
 package com.chasemeng.schematicannonexcavator.mixin;
 
 import com.chasemeng.schematicannonexcavator.ExcavatorConfig;
+import com.chasemeng.schematicannonexcavator.HookManager;
 import com.chasemeng.schematicannonexcavator.SchematicannonExcavator;
+import com.simibubi.create.content.schematics.cannon.SchematicannonBlockEntity;
 import com.simibubi.create.content.schematics.cannon.SchematicannonScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -41,12 +43,9 @@ public abstract class SchematicannonScreenMixin extends Screen {
             @Override
             protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
                 boolean enabled = ExcavatorConfig.ENABLE_EXCAVATOR.get();
-
                 int bgColor = enabled ? 0xFF2E7D32 : 0xFF424242;
                 g.fill(this.getX(), this.getY(), this.getX() + 20, this.getY() + 20, bgColor);
-
                 g.blit(ICON, this.getX() + 2, this.getY() + 2, 0, 0, 16, 16, 16, 16);
-
                 int border = enabled ? 0xFF66BB6A : 0xFF888888;
                 g.renderOutline(this.getX(), this.getY(), 20, 20, border);
             }
@@ -54,5 +53,23 @@ public abstract class SchematicannonScreenMixin extends Screen {
 
         this.addRenderableWidget(customButton);
         SchematicannonExcavator.LOGGER.info("[Excavator] Button added at ({}, {})", x, y);
+    }
+
+    @Inject(method = "renderForeground", at = @At("TAIL"), remap = false)
+    private void renderContainerFullStatus(GuiGraphics g, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
+        if (!(((Object) this) instanceof SchematicannonScreen screen)) return;
+        if (screen.getMenu() == null) return;
+
+        SchematicannonBlockEntity be = screen.getMenu().contentHolder;
+        if (be == null) return;
+        if (be.getLevel() == null) return;
+        if (!HookManager.isFullPaused(be.getLevel(), be.getBlockPos())) return;
+
+        Component text = Component.translatable("schematicannonexcavator.status.container_full");
+        int textWidth = this.font.width(text);
+        int x = (this.width - textWidth) / 2;
+        int y = this.height / 2 - 20;
+
+        g.drawString(this.font, text, x, y, 0xFF5555, true);
     }
 }

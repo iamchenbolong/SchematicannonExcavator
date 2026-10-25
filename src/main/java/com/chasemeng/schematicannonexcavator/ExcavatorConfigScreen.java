@@ -20,6 +20,7 @@ public class ExcavatorConfigScreen extends Screen {
     protected void init() {
         int cx = this.width / 2;
         int cy = this.height / 2;
+
         this.toggleButton = Button.builder(getToggleText(), b -> {
             boolean v = !ExcavatorConfig.ENABLE_EXCAVATOR.get();
             ExcavatorConfig.ENABLE_EXCAVATOR.set(v);
@@ -29,11 +30,20 @@ public class ExcavatorConfigScreen extends Screen {
 
         this.blacklistBox = new EditBox(this.font, cx - 100, cy, 200, 20,
                 Component.translatable("schematicannonexcavator.config.blacklist"));
+        this.blacklistBox.setMaxLength(2048);
         this.blacklistBox.setValue(String.join(",", ExcavatorConfig.BLACKLIST.get()));
         this.addRenderableWidget(blacklistBox);
 
         this.addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> {
-            ExcavatorConfig.BLACKLIST.set(java.util.Arrays.asList(blacklistBox.getValue().split(",")));
+            String raw = blacklistBox.getValue();
+            java.util.List<String> list = new java.util.ArrayList<>();
+            for (String s : raw.split(",")) {
+                String trimmed = s.trim();
+                if (!trimmed.isEmpty()) {
+                    list.add(trimmed);
+                }
+            }
+            ExcavatorConfig.BLACKLIST.set(list);
             ExcavatorConfig.SPEC.save();
             this.minecraft.setScreen(parent);
         }).bounds(cx - 100, cy + 40, 200, 20).build());

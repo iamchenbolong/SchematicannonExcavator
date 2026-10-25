@@ -3,7 +3,7 @@
   "schematicannonexcavator.config.enable": "启用蓝图挖掘机",
   "schematicannonexcavator.config.blacklist": "挖掘黑名单列表",
   "schematicannonexcavator.button.excavator": "挖掘机",
-  "gui.schematicannon.status.containerFull": "容器已满",
+  "schematicannonexcavator.status.container_full": "容器已满",
   "gui.yes": "是",
   "gui.no": "否"
 }

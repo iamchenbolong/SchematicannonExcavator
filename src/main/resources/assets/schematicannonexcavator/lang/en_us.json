@@ -3,7 +3,7 @@
   "schematicannonexcavator.config.enable": "Enable Blueprint Excavator",
   "schematicannonexcavator.config.blacklist": "Excavator Blacklist",
   "schematicannonexcavator.button.excavator": "Excavator",
-  "gui.schematicannon.status.containerFull": "Container Full",
+  "schematicannonexcavator.status.container_full": "Container Full",
   "gui.yes": "Yes",
   "gui.no": "No"
 }
