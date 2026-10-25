@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.chasemeng.schematicannonexcavator.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "schematicannonexcavator.refmap.json",
+  "mixins": [
+    "SchematicannonBlockEntityMixin"
+  ],
+  "client": [
+    "SchematicannonScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

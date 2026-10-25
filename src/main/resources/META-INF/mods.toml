@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+[[mods]]
+modId="schematicannonexcavator"
+version="1.0.0"
+displayName="Schematicannon Excavator"
+authors="Chase_meng"
+description="Adds excavator functionality to the Create Schematicannon."
+[[dependencies.schematicannonexcavator]]
+modId="forge"
+mandatory=true
+versionRange="[47.4.6,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.schematicannonexcavator]]
+modId="create"
+mandatory=true
+versionRange="[0.5.1.j,)"
+ordering="NONE"
+side="BOTH"
