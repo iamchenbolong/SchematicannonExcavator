@@ -36,10 +36,15 @@ public class ExcavatorHelper {
         for (Direction dir : Direction.values()) {
             BlockEntity be = level.getBlockEntity(cannonPos.relative(dir));
             if (be == null) continue;
-            IItemHandler handler = be.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).orElse(null);
+            LazyOptional<IItemHandler> cap = be.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite());
+            if (!cap.isPresent()) continue;
+            IItemHandler handler = cap.orElse(null);
             if (handler == null) continue;
+
+            ItemStack remaining = stack.copy();
             for (int i = 0; i < handler.getSlots(); i++) {
-                if (handler.isItemValid(i, stack)) return true;
+                remaining = handler.insertItem(i, remaining, true);
+                if (remaining.isEmpty()) return true;
             }
         }
         return false;

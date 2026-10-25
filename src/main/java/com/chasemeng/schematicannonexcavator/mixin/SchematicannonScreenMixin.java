@@ -39,8 +39,16 @@ public abstract class SchematicannonScreenMixin extends Screen {
                 b -> Component.empty()
         ) {
             @Override
-            protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-                guiGraphics.blit(ICON, this.getX(), this.getY(), 0, 0, 20, 20, 20, 20);
+            protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+                boolean enabled = ExcavatorConfig.ENABLE_EXCAVATOR.get();
+
+                int bgColor = enabled ? 0xFF2E7D32 : 0xFF424242;
+                g.fill(this.getX(), this.getY(), this.getX() + 20, this.getY() + 20, bgColor);
+
+                g.blit(ICON, this.getX() + 2, this.getY() + 2, 0, 0, 16, 16, 16, 16);
+
+                int border = enabled ? 0xFF66BB6A : 0xFF888888;
+                g.renderOutline(this.getX(), this.getY(), 20, 20, border);
             }
         };
 
